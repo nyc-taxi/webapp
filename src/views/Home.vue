@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-container>
+    <v-container fluid>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" md="9">
           <line-chart :from="from" :to="to"></line-chart>
         </v-col>
-        <v-col cols="12"></v-col>
+        <v-col cols="12" md="3"></v-col>
       </v-row>
     </v-container>
   </div>
