@@ -12,6 +12,9 @@ export default {
   name: "LineChart",
   components: {},
 	props: ['from', 'to'],
+  data: () => ({
+    chart: null,
+  }),
 	computed: {
     curve() {
       const data = forRange(this.from, this.to);
@@ -30,51 +33,62 @@ export default {
     drawChart() {
       const ctx = this.$refs.canvas.getContext("2d");
       const { labels, upperCurve, lowerCurve, dataCurve, outlierCurve } = this.curve;
-      new Chart(ctx, {
+
+      const data = {
+        labels: labels,
+        datasets: [
+        {
+          label: 'Upper curve',
+          data: upperCurve,
+          pointRadius: 0,					
+          fill: 1,
+        },
+        {
+          label: 'Lower curve',
+          data: lowerCurve,
+          pointRadius: 0,
+        },
+        {
+          label: 'data',
+          data: dataCurve,
+          borderColor: 'rgba(100,50,255,0.5)',
+          pointRadius: 0,
+          pointHitRadius: 0,
+          pointHoverRadius: 0,
+        },
+        {
+          label: 'outlier',
+          data: outlierCurve,
+          pointRadius: 10,
+          pointHoverRadius: 18,
+          borderColor: 'red',
+          backgroundColor: 'rgba(0,0,0,0)',
+        }
+      ]}
+      if (this.chart) {
+        
+        this.chart.data.labels = data.labels;
+        this.chart.data.datasets.forEach((value, index) => {
+          value.data = data.datasets[index].data;
+        })
+
+        this.chart.update();
+        return;
+      }
+      this.chart = new Chart(ctx, {
         type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-          {
-            label: 'Upper curve',
-            data: upperCurve,
-            pointRadius: 0,					
-            fill: 1,
+        data,
+        options: {
+          // fill: ,
+          interaction: {
+            intersect: false,
           },
-          {
-            label: 'Lower curve',
-            data: lowerCurve,
-            pointRadius: 0,
+          plugins: {
+            legend: false,
           },
-          {
-            label: 'data',
-            data: dataCurve,
-            borderColor: 'rgba(100,50,255,0.5)',
-            pointRadius: 0,
-            pointHitRadius: 0,
-            pointHoverRadius: 0,
-          },
-          {
-            label: 'outlier',
-            data: outlierCurve,
-            pointRadius: 10,
-            pointHoverRadius: 18,
-            borderColor: 'red',
-            backgroundColor: 'rgba(0,0,0,0)',
-          }
-        ],
-      },
-      options: {
-        // fill: ,
-        interaction: {
-          intersect: false,
+          responsive: true,
+          maintainAspectRatio: false,
         },
-        plugins: {
-          legend: false,
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-      },
       });
     },
   }

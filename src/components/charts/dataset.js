@@ -2,7 +2,7 @@
 import uplow from './upperlower24.csv';
 import data from './data24.csv';
 import outlier from './outlier24.csv';
-import { isBefore, isAfter, parseISO } from 'date-fns';
+import { isBefore, isAfter, parseISO, format } from 'date-fns';
 
 
 export function forRange(from, to) {
@@ -33,7 +33,8 @@ export function forRange(from, to) {
   }, []) 
 
   const labels = uplowFiltered.reduce((prev, curr) => {
-    return [...prev, curr.timestamp];
+    const timestamp = parseISO(curr.timestamp)
+    return [...prev, format(timestamp, "dd/MM/yy")];
   }, [])
 
   const upperCurve = uplowFiltered.reduce((prev, curr) => {
