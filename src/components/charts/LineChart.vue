@@ -61,8 +61,10 @@ export default {
           data: outlierCurve,
           pointRadius: 10,
           pointHoverRadius: 18,
-          borderColor: 'red',
+          borderColor: '#f44336',
           backgroundColor: 'rgba(0,0,0,0)',
+          borderWidth: 2,
+          hoverBorderWidth: 5,
         }
       ]}
       if (this.chart) {
